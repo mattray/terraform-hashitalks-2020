@@ -20,3 +20,11 @@ Visit the webpage
 ```
 $ terraform destroy
 ```
+
+
+## Chef
+```
+cd chef
+chef install hashitalks-2020.rb
+chef push demo hashitalks-2020.lock.json
+```

@@ -29,7 +29,7 @@ resource "aws_subnet" "default" {
 
 # A security group for the ELB so it is accessible via the web
 resource "aws_security_group" "elb" {
-  name        = "terraform_example_elb"
+  name        = "hashitalks_elb"
   description = "Used in the terraform"
   vpc_id      = aws_vpc.default.id
 
@@ -53,7 +53,7 @@ resource "aws_security_group" "elb" {
 # Our default security group to access
 # the instances over SSH and HTTP
 resource "aws_security_group" "default" {
-  name        = "terraform_example"
+  name        = "hashitalks"
   description = "Used in the terraform"
   vpc_id      = aws_vpc.default.id
 
@@ -83,7 +83,7 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_elb" "web" {
-  name = "terraform-example-elb"
+  name = "hashitalks-elb"
 
   subnets         = [aws_subnet.default.id]
   security_groups = [aws_security_group.elb.id]
@@ -129,14 +129,17 @@ resource "aws_instance" "web" {
   # backend instances.
   subnet_id = aws_subnet.default.id
 
-  # We run a remote provisioner on the instance after creating it.
-  # In this case, we just install nginx and start it. By default,
-  # this should be on port 80
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get -y update",
-      "sudo apt-get -y install nginx",
-      "sudo service nginx start",
-    ]
+  # Use the Chef provisioner for the HashiTalks demo
+  provisioner "chef" {
+    client_options  = ["chef_license 'accept'"]
+    recreate_client = true
+    server_url      = "https://api.chef.io/organizations/matt"
+    user_key        = file("chef/.chef/mray.pem")
+    user_name       = "mray"
+
+    node_name       = "hashitalks"
+    use_policyfile  = true
+    policy_group    = "demo"
+    policy_name     = "hashitalks-2020"
   }
 }
