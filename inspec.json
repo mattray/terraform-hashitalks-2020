@@ -1,0 +1,12 @@
+{
+    "reporter" : {
+        "automate" : {
+            "environment" : "iggy",
+            "node_name" : "inspec-iggy",
+            "node_uuid" : "75c9fb75-37db-4716-9882-3e220a82fab6",
+            "stdout" : false,
+            "token" : "35V9X1VO0VRSeUjukPmBsihvwXI=",
+            "url" : "https://inez.bottlebru.sh/data-collector/v0/"
+        }
+    }
+}
