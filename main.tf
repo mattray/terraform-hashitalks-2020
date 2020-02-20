@@ -133,13 +133,13 @@ resource "aws_instance" "web" {
   provisioner "chef" {
     client_options  = ["chef_license 'accept'"]
     recreate_client = true
-    server_url      = "https://api.chef.io/organizations/matt"
-    user_key        = file("chef/.chef/mray.pem")
-    user_name       = "mray"
+    server_url      = var.chef_server_url
+    user_key        = file(var.chef_user_key)
+    user_name       = var.chef_user_name
 
-    node_name       = "hashitalks"
     use_policyfile  = true
-    policy_group    = "demo"
-    policy_name     = "hashitalks-2020"
+    node_name       = var.chef_node_name
+    policy_group    = var.chef_policy_group
+    policy_name     = var.chef_policy_name
   }
 }
